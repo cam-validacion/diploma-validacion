@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Diploma CAM</title>
+
+<style>
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background:#f4f4f4;
+  margin:0;
+  padding:20px;
+}
+
+.oculto{ display:none; }
+
+/* ===== GENERADOR ===== */
+.generador{
+  max-width:600px;
+  margin:auto;
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
+  text-align:center;
+}
+
+input, button{
+  width:90%;
+  padding:12px;
+  margin:8px;
+  font-size:16px;
+}
+
+button{ cursor:pointer; }
+
+/* ===== VALIDACIÓN ===== */
+.contenedor{
+  max-width:420px;
+  margin:auto;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,.15);
+  overflow:hidden;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  padding:15px;
+}
+
+.header img{ height:60px; }
+
+.header-text{
+  margin-left:10px;
+  font-size:14px;
+}
+
+.barra{
+  background:#c6a56a;
+  color:#fff;
+  text-align:center;
+  padding:8px;
+  font-size:14px;
+}
+
+.contenido{
+  padding:25px 20px;
+  text-align:center;
+}
+
+.campo{
+  border:2px solid #d6c39a;
+  border-radius:8px;
+  padding:10px;
+  margin-bottom:15px;
+  text-align:left;
+}
+
+.campo label{
+  font-size:12px;
+  color:#777;
+}
+
+.campo .valor{
+  font-size:15px;
+  margin-top:5px;
+}
+
+.check{
+  font-size:60px;
+  color:#2ecc71;
+}
+
+.footer{
+  background:#e6e6e6;
+  font-size:11px;
+  text-align:center;
+  padding:12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= GENERADOR ================= -->
+<div class="generador" id="generador">
+  <h2>Generador de Diploma</h2>
+  <input id="nombre" placeholder="NOMBRE COMPLETO">
+  <input id="curp" placeholder="CURP">
+  <button onclick="generar()">Generar Diploma</button>
+</div>
+
+<!-- ================= VALIDACIÓN ================= -->
+<div class="contenedor oculto" id="validacion">
+
+  <div class="header">
+    <img src="https://i.imgur.com/1Ym0iEm.jpeg">
+    <div class="header-text">
+      Centro de Actualización del Magisterio<br>
+      Tuxtla Gutiérrez
+    </div>
+  </div>
+
+  <div class="barra">
+    Portal de servicios administrativos<br>
+    <strong>Chiapas</strong>
+  </div>
+
+  <div class="contenido">
+    <h3>Validación de documentos académicos electrónicos</h3>
+
+    <div class="campo">
+      <label>NOMBRE</label>
+      <div class="valor" id="vNombre"></div>
+    </div>
+
+    <div class="campo">
+      <label>CURP</label>
+      <div class="valor" id="vCurp"></div>
+    </div>
+
+    <div class="campo">
+      <label>DOCUMENTO</label>
+      <div class="valor">Diplomado en línea</div>
+    </div>
+
+    <div class="check">✔</div>
+    <strong style="color:#2ecc71">DOCUMENTO VÁLIDO</strong>
+  </div>
+
+  <div class="footer">
+    Sistema Electrónico Estatal del Estado de Chiapas
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const nombre = params.get("nombre");
+const curp   = params.get("curp");
+
+/* ===== SI VIENE DEL QR ===== */
+if(nombre && curp){
+  document.getElementById("generador").classList.add("oculto");
+  document.getElementById("validacion").classList.remove("oculto");
+  document.getElementById("vNombre").textContent = nombre;
+  document.getElementById("vCurp").textContent = curp;
+}
+
+/* ===== GENERAR DIPLOMA ===== */
+function generar(){
+  const n = document.getElementById("nombre").value.trim();
+  const c = document.getElementById("curp").value.trim();
+  if(!n || !c){ alert("Completa los datos"); return; }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF("landscape","pt",[1131,1600]);
+
+  const img = new Image();
+  img.crossOrigin="anonymous";
+  img.src="https://i.imgur.com/9CbEi8E.jpeg";
+
+  img.onload=function(){
+    pdf.addImage(img,"JPEG",0,0,1600,1131);
+
+    pdf.setFont("times","bold");
+    pdf.setFontSize(52);
+    pdf.text(n.toUpperCase(),800,335,{align:"center"});
+
+    pdf.setFont("helvetica","bold");
+    pdf.setFontSize(30);
+    pdf.text("29 de Octubre al 19",1045,600);
+    pdf.text("de Diciembre de 2025",800,645,{align:"center"});
+
+    const url = location.href.split("?")[0] +
+      `?nombre=${encodeURIComponent(n)}&curp=${encodeURIComponent(c)}`;
+
+    const qr = new QRious({value:url,size:150});
+    pdf.addImage(qr.toDataURL(),"PNG",1390,825,150,150);
+
+    pdf.save(`DIPLOMA_${n}.pdf`);
+  }
+}
+</script>
+
+</body>
+</html>
