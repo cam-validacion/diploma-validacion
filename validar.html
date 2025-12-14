@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Validación de Documento</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f4f4f4;
+}
+
+.contenedor{
+  max-width:420px;
+  margin:20px auto;
+  background:#ffffff;
+  border-radius:8px;
+  box-shadow:0 0 10px rgba(0,0,0,.1);
+  overflow:hidden;
+}
+
+.header{
+  background:#ffffff;
+  padding:15px;
+  text-align:center;
+  border-bottom:4px solid #c9a14a;
+}
+
+.header img{
+  max-width:100%;
+}
+
+.titulo{
+  padding:20px;
+  text-align:left;
+  font-size:26px;
+  color:#333;
+}
+
+.campo{
+  margin:15px 20px;
+}
+
+.label{
+  font-size:13px;
+  color:#777;
+  margin-bottom:4px;
+}
+
+.valor{
+  border:1px solid #c9a14a;
+  border-radius:6px;
+  padding:12px;
+  font-size:16px;
+  background:#fafafa;
+}
+
+.check{
+  text-align:center;
+  margin:20px 0;
+}
+
+.check img{
+  width:70px;
+}
+
+.footer{
+  background:#eee;
+  padding:15px;
+  font-size:11px;
+  text-align:center;
+  color:#555;
+}
+</style>
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <div class="header">
+    <img src="https://i.imgur.com/1Ym0iEm.jpeg" alt="Encabezado">
+  </div>
+
+  <div class="titulo">
+    Sistema de Información y Gestión Educativa<br>
+    <strong>Validación de documentos académicos electrónicos</strong>
+  </div>
+
+  <div class="campo">
+    <div class="label">NOMBRE</div>
+    <div class="valor" id="nombre"></div>
+  </div>
+
+  <div class="campo">
+    <div class="label">CURP</div>
+    <div class="valor" id="curp"></div>
+  </div>
+
+  <div class="campo">
+    <div class="label">DOCUMENTO</div>
+    <div class="valor">Diplomado en línea</div>
+  </div>
+
+  <div class="check">
+    <img src="https://i.imgur.com/2yaf2wb.png">
+  </div>
+
+  <div class="footer">
+    Sistema Electrónico Estatal del Estado de Chiapas<br>
+    Es una fuente de inteligencia anticorrupción para la consulta de información.
+  </div>
+
+</div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+document.getElementById("nombre").innerText = params.get("nombre") || "—";
+document.getElementById("curp").innerText = params.get("curp") || "—";
+</script>
+
+</body>
+</html>
