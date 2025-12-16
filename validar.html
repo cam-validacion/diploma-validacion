@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>Validación de documentos académicos</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -17,8 +16,8 @@ body{
   max-width:420px;
   margin:20px auto;
   background:#ffffff;
-  border-radius:12px;
-  box-shadow:0 2px 8px rgba(0,0,0,.15);
+  border-radius:10px;
+  box-shadow:0 4px 10px rgba(0,0,0,.15);
   overflow:hidden;
 }
 
@@ -27,61 +26,56 @@ body{
   display:block;
 }
 
-.contenido{
+.titulo{
   padding:20px;
-}
-
-h1{
-  font-size:22px;
-  font-weight:normal;
-  margin:0;
-  color:#333;
-}
-
-h2{
   font-size:26px;
-  margin:10px 0 20px;
-  font-weight:bold;
-  color:#333;
+  line-height:1.2;
+}
+
+.titulo strong{
+  font-weight:800;
 }
 
 .campo{
-  margin-bottom:16px;
+  margin:12px 20px;
 }
 
 .campo label{
   font-size:13px;
   color:#777;
   display:block;
-  margin-bottom:6px;
+  margin-bottom:4px;
 }
 
-.valor{
-  border:1.5px solid #c9b37e;
-  border-radius:8px;
-  padding:12px;
+.campo .valor{
+  border:1px solid #d4b26a;
+  border-radius:6px;
+  padding:10px;
   font-size:16px;
-  background:#fafafa;
 }
 
-/* FORZAR MAYÚSCULAS */
+/* Forzar mayúsculas */
 .mayusculas{
   text-transform: uppercase;
 }
 
 .check{
   text-align:center;
-  margin:20px 0;
+  font-size:60px;
+  color:#1db954;
+  margin:10px 0;
 }
 
-.check svg{
-  width:70px;
-  height:70px;
+.texto-valido{
+  text-align:center;
+  font-weight:bold;
+  color:#1db954;
+  margin-bottom:10px;
 }
 
 .pie{
-  background:#f1f1f1;
-  padding:14px;
+  background:#efefef;
+  padding:15px;
   font-size:12px;
   color:#555;
   text-align:center;
@@ -93,39 +87,41 @@ h2{
 
 <div class="contenedor">
 
-  <!-- ENCABEZADO CON LOGOS -->
+  <!-- ENCABEZADO -->
   <div class="encabezado">
     <img src="https://i.imgur.com/1Ym0iEm.jpeg" alt="Encabezado institucional">
   </div>
 
-  <!-- CONTENIDO -->
-  <div class="contenido">
-    <h1>Sistema de Información y Gestión Educativa</h1>
-    <h2>Validación de documentos académicos electrónicos</h2>
-
-    <div class="campo">
-      <label>NOMBRE</label>
-      <div class="valor mayusculas" id="nombre">—</div>
-    </div>
-
-    <div class="campo">
-      <label>CURP</label>
-      <div class="valor mayusculas" id="curp">—</div>
-    </div>
-
-    <div class="campo">
-      <label>DOCUMENTO</label>
-      <div class="valor">Diplomado en línea</div>
-    </div>
-
-    <!-- ICONO DE VALIDADO -->
-    <div class="check">
-      <svg viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="10" stroke="#2ecc71" stroke-width="2"/>
-        <path d="M7 12.5l3 3 7-7" stroke="#2ecc71" stroke-width="2" fill="none"/>
-      </svg>
-    </div>
+  <!-- TÍTULO -->
+  <div class="titulo">
+    Sistema de Información y Gestión Educativa<br>
+    <strong>Validación de documentos académicos electrónicos</strong>
   </div>
+
+  <!-- DATOS -->
+  <div class="campo">
+    <label>NOMBRE</label>
+    <div class="valor mayusculas" id="nombre">—</div>
+  </div>
+
+  <div class="campo">
+    <label>CURP</label>
+    <div class="valor mayusculas" id="curp">—</div>
+  </div>
+
+  <div class="campo">
+    <label>DOCUMENTO</label>
+    <div class="valor">Diplomado en línea – 200 horas</div>
+  </div>
+
+  <div class="campo">
+    <label>FECHA DE EMISIÓN</label>
+    <div class="valor" id="fecha">—</div>
+  </div>
+
+  <!-- VALIDADO -->
+  <div class="check">✔</div>
+  <div class="texto-valido">DOCUMENTO VÁLIDO</div>
 
   <!-- PIE -->
   <div class="pie">
@@ -136,22 +132,22 @@ h2{
 </div>
 
 <script>
-/*
-  El QR debe apuntar así:
-  validar.html?nombre=NOMBRE+DEL+ALUMNO&curp=CURPDELALUMNO
-*/
-
+// Leer parámetros del QR
 const params = new URLSearchParams(window.location.search);
 
 const nombre = params.get("nombre");
-const curp = params.get("curp");
+const curp   = params.get("curp");
+const fecha  = params.get("fecha");
 
+// Mostrar datos (SIN recalcular fecha)
 if(nombre){
   document.getElementById("nombre").textContent = nombre;
 }
-
 if(curp){
   document.getElementById("curp").textContent = curp;
+}
+if(fecha){
+  document.getElementById("fecha").textContent = fecha;
 }
 </script>
 
